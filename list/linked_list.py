@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any
+from typing import Any, Optional
 
 
 class Node(object):
@@ -54,13 +54,66 @@ class LinkedList(object):
         current_node = None
 
 
+    def reverse_iterative(self) -> None:
+        previous_node = None
+        current_node = self.head
+        while current_node:
+            next_node = current_node.next
+            current_node.next = previous_node
+
+            previous_node = current_node
+            current_node = next_node
+
+        self.head = previous_node
+
+    def reverse_recursive(self)-> None:
+        def _reverse_recursive(current_node: Node, previous_node: Node) -> Node:
+            if not current_node:
+                return previous_node
+            
+            next_node = current_node.next
+            current_node.next = previous_node
+            previous_node = current_node
+            current_node = next_node   
+            return _reverse_recursive(current_node, previous_node)
+
+        self.head = _reverse_recursive(self.head, None)
+
+    def reverse_even(self) -> None:
+        #1,4,6,8,9 => 1,8,6,4,9
+        #1,4,6,8,9,1,4,6,8,9 => 1,8,6,4,9,1,8,6,4,9
+        def _reverse_even(head:Node, previous_node: Node) -> Optional[Node]:
+            if head is None:
+                return None
+            
+            current_node = head
+            while current_node and current_node.data % 2 == 0:
+                next_node = current_node.next
+                current_node.next = previous_node
+                previous_node = current_node
+                current_node = next_node   
+
+            if current_node != head:
+                head.next = current_node
+                _reverse_even(current_node, None)
+                return previous_node
+            else:
+                head.next = _reverse_even(head.next, head)
+                return head
+            
+        self.head = _reverse_even(self.head, None)
+
 if __name__ == "__main__":
     l = LinkedList()
+    l.append(2)
+    l.append(4)
+    l.append(6)
     l.append(1)
     l.append(2)
-    l.append(3)
-    l.insert(0)
+    l.append(4)
+    l.append(6)
+    l.append(1)
     l.print()
-    l.remove(2)
     print("-----------------")
+    l.reverse_even()
     l.print()

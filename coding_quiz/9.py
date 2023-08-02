@@ -2,7 +2,7 @@
 # print(s == "".join(reversed(s)))
 
 # print(s == s[::-1])
-
+from typing import Generator
 
 def is_palindrome(strings: str) -> bool:
     len_strings = len(strings)
@@ -20,7 +20,7 @@ def is_palindrome(strings: str) -> bool:
     return True
 
 
-def find_palindrome(strings: str, left: int, right: int):
+def find_palindrome(strings: str, left: int, right: int) -> Generator[str, None, None]:
     while 0 <= left and right <= len(strings) - 1:
         if strings[left] != strings[right]:
             break
@@ -28,7 +28,7 @@ def find_palindrome(strings: str, left: int, right: int):
         left -= 1
         right += 1
 
-def find_all_palindrome(strings: str):
+def find_all_palindrome(strings: str) -> Generator[str, None, None]:
     len_strings = len(strings)
     if not len_strings:
         yield
